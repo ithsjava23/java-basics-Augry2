@@ -11,7 +11,6 @@ public class App {
     final static int PRICE = 2;
 
 
-
     public static void main(String[] args) {
         Scanner fetch = new Scanner(System.in);
         int[][] priceList = new int[ROWS][COLUMNS];
@@ -21,14 +20,30 @@ public class App {
     }
 
     private static void minMaxAvg(int[][] arr) {
-        Print2dList(arr);
-        bubbleSort2dArray(arr); // sorting the array from small -> big
-        System.out.println("SORTED");
-        Print2dList(arr);
+
+        int[][] sortedList = arr;
+
+        bubbleSort2dArray(sortedList);
+        print2dList(sortedList);
+
+        // Lägsta pris: 22-23, -12 öre/kWh
+        System.out.println("Lästa pris: " + sortedList[0][HOUR_START] + "-" + sortedList[0][HOUR_STOP] + ", " + sortedList[0][PRICE] + " öre/kWh");
+
+        // Högsta pris: 11-12, 12 öre/kWh
+        System.out.println("Högsta pris: " + sortedList[23][HOUR_START] + "-" + sortedList[23][HOUR_STOP] + ", " + sortedList[23][PRICE] + " öre/kWh");
+
+        // Medelpris: 0,00 öre/kWh
+        int sum =0;
+        for (int i = 0; i < sortedList.length; i++) {
+            sum = sum + sortedList[i][PRICE]; // adding on the third element (price column) each iteration
+        }
+        double average = sum / 24.0;
+        System.out.println("Medelpris: " + average + " öre/kWh");
 
     }
 
-    private static void Print2dList(int[][] arr) {
+    // for testing purposes
+    private static void print2dList(int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
                 System.out.print(arr[i][j] + " ");
@@ -66,6 +81,7 @@ public class App {
         return tempList;
     }
 
+    // TODO change into 2d array
     private static int[] handleInput(Scanner fetch) {
 
         int value;
@@ -129,7 +145,8 @@ public class App {
                     break;
                 }
 
-                case "e", "E": {
+                case "e":
+                case "E": {
                     System.out.println("Exiting program.. ");
                     runMenu = false;
                     break;
@@ -137,12 +154,6 @@ public class App {
                 default:
                     System.out.println("Invalid input..");
             }
-
-
         } while (runMenu);
-        {
-
-
-        }
     }
 }
