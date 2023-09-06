@@ -19,27 +19,40 @@ public class App {
 
     }
 
-    private static void minMaxAvg(int[][] arr) {
 
-        int[][] sortedList = arr;
+    private static void minMaxAvg(int[][] priceList) {
+        int lowestPriceIndex = 0;
+        int highestPriceIndex = 0;
 
-        bubbleSort2dArray(sortedList);
-        print2dList(sortedList);
-
-        // Lägsta pris: 22-23, -12 öre/kWh
-        System.out.println("Lästa pris: " + sortedList[0][HOUR_START] + "-" + sortedList[0][HOUR_STOP] + ", " + sortedList[0][PRICE] + " öre/kWh");
-
-        // Högsta pris: 11-12, 12 öre/kWh
-        System.out.println("Högsta pris: " + sortedList[23][HOUR_START] + "-" + sortedList[23][HOUR_STOP] + ", " + sortedList[23][PRICE] + " öre/kWh");
-
-        // Medelpris: 0,00 öre/kWh
-        int sum =0;
-        for (int i = 0; i < sortedList.length; i++) {
-            sum = sum + sortedList[i][PRICE]; // adding on the third element (price column) each iteration
+        // iterating through the list and if a lowest price is found its saved in a variable, same with highest
+        for (int i = 1; i < priceList.length; i++) {
+            if (priceList[i][PRICE] < priceList[lowestPriceIndex][PRICE]) {
+                lowestPriceIndex = i;
+            }
+            if (priceList[i][PRICE] > priceList[highestPriceIndex][PRICE]) {
+                highestPriceIndex = i;
+            }
         }
-        double average = sum / 24.0;
-        System.out.println("Medelpris: " + average + " öre/kWh");
 
+        // formatting a leading 0 if sub 10
+        String lowestPriceHours = String.format("%02d-%02d", priceList[lowestPriceIndex][HOUR_START], priceList[lowestPriceIndex][HOUR_STOP]);
+        String highestPriceHours = String.format("%02d-%02d", priceList[highestPriceIndex][HOUR_START], priceList[highestPriceIndex][HOUR_STOP]);
+
+        // Calculating the average price
+        int sum = 0;
+        for (int i = 0; i < priceList.length; i++) {
+            sum += priceList[i][PRICE];
+        }
+        double average = (double) sum / priceList.length;
+        // formatting so it contains only 2 decimals, and replaces . with ,
+        String formattedAverage = String.format("%.2f", average).replace('.', ',');
+
+        String output = String.format("Lägsta pris: %s, %d öre/kWh\nHögsta pris: %s, %d öre/kWh\nMedelpris: %s öre/kWh\n",
+                lowestPriceHours, priceList[lowestPriceIndex][PRICE],
+                highestPriceHours, priceList[highestPriceIndex][PRICE],
+                formattedAverage);
+
+        System.out.println(output);
     }
 
     // for testing purposes
@@ -82,22 +95,26 @@ public class App {
     }
 
     // TODO change into 2d array
-    private static int[] handleInput(Scanner fetch) {
+    private static int[][] handleInput(Scanner fetch) {
 
         int value;
-        int[] tempList = new int[24];
+        int[][] tempList = new int[ROWS][COLUMNS];
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < ROWS; i++) {
 
             boolean validEntry = false;
 
             // repeat this until user has entered a valid entry
             while (!validEntry) { // run while validEntry is false
-                System.out.println("enter value for " + i + " to " + (i + 1));
+                //System.out.println("enter value for " + i + " to " + (i + 1));
                 if (fetch.hasNextInt()) {
+
                     value = fetch.nextInt();
                     fetch.nextLine();
-                    tempList[i] = value;
+
+                    tempList[i][PRICE] = value;
+                    tempList[i][HOUR_START] = i;
+                    tempList[i][HOUR_STOP] = i + 1;
                     validEntry = true; // jump out of while, and go to next iteration in the for loop
                 } else {
                     System.out.println("invalid entry, try again..");
@@ -128,7 +145,7 @@ public class App {
 
                 case "1": {
                     //priceList = handleInput(fetch);
-                    priceList = handleInputRandomNr();
+                    priceList = handleInput(fetch);
                     break;
                 }
 
