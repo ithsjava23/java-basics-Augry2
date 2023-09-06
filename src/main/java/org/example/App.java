@@ -19,6 +19,26 @@ public class App {
 
     }
 
+    private static void printSortedList(int[][] priceList) {
+        bubbleSort2dArrayDecending(priceList);
+        print2dList(priceList);
+    }
+
+    private static void print2dList(int[][] priceList) {
+
+        String formattedString = "";
+
+        for (int i = 0; i < priceList.length; i++) {
+            String startHour = String.format("%02d", priceList[i][HOUR_START]);
+            String stopHour = String.format("%02d", priceList[i][HOUR_STOP]);
+            String lineToPrint = startHour + "-" + stopHour + " " + priceList[i][PRICE] + " öre\n";
+
+            formattedString += lineToPrint;
+        }
+
+        System.out.println(formattedString);
+
+    }
 
     private static void minMaxAvg(int[][] priceList) {
         int lowestPriceIndex = 0;
@@ -55,21 +75,11 @@ public class App {
         System.out.println(output);
     }
 
-    // for testing purposes
-    private static void print2dList(int[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j] + " ");
-            }
-            // Print a newline after each row
-            System.out.println();
-        }
-    }
 
-    private static void bubbleSort2dArray(int[][] arr) {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < ROWS - i - 1; j++) {
-                if (arr[j][2] > arr[j + 1][2]) {
+    private static void bubbleSort2dArrayDecending(int[][] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j][2] < arr[j + 1][2]) { // Change the comparison direction to descending
                     int[] temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
@@ -94,7 +104,7 @@ public class App {
         return tempList;
     }
 
-    // TODO change into 2d array
+
     private static int[][] handleInput(Scanner fetch) {
 
         int value;
@@ -131,13 +141,7 @@ public class App {
     private static void showMenu(Scanner fetch, int[][] priceList) {
         boolean runMenu = true;
         do {
-            System.out.print("Elpriser\n" +
-                    "========\n" +
-                    "1. Inmatning\n" +
-                    "2. Min, Max och Medel\n" +
-                    "3. Sortera\n" +
-                    "4. Bästa Laddningstid (4h)\n" +
-                    "e. Avsluta\n");
+            printMenuItems();
 
             String choice = fetch.nextLine();
 
@@ -154,7 +158,7 @@ public class App {
                     break;
                 }
                 case "3": {
-                    System.out.println("test3");
+                    printSortedList(priceList);
                     break;
                 }
                 case "4": {
@@ -172,5 +176,15 @@ public class App {
                     System.out.println("Invalid input..");
             }
         } while (runMenu);
+    }
+
+    private static void printMenuItems() {
+        System.out.print("Elpriser\n" +
+                "========\n" +
+                "1. Inmatning\n" +
+                "2. Min, Max och Medel\n" +
+                "3. Sortera\n" +
+                "4. Bästa Laddningstid (4h)\n" +
+                "e. Avsluta\n");
     }
 }
