@@ -15,9 +15,7 @@ public class App {
         int[][] priceList = new int[ROWS][COLUMNS];
 
         showMenu(fetch, priceList);
-
     }
-
 
     private static void bestChargingHours(int[][] priceList) {
 
@@ -41,19 +39,18 @@ public class App {
         // calculating avarage
         double avarage = lowestPrice / 4.0;
 
-        // printing out best time to start charging
-        //System.out.println("Påbörja laddning klockan " + lowestPrice);
-        //System.out.printf("Medelpris 4h: %.2f öre/kWh\n", avarage); // 2 decimals
-
         String output = String.format("Påbörja laddning klockan %d\nMedelpris 4h: %.1f öre/kWh\n", lowestPriceIndex, avarage);
         System.out.println(output);
-
-
     }
 
     private static void printSortedList(int[][] priceList) {
-        int[][] copyOfPriceList = priceList; // making a copy so that we dont change the real list, because we need the
-        // unsorted list for the next assignment
+        // creating a copy of pricelist so we dont change the actual list, because it will mess with the output of alternative 4.
+        int[][] copyOfPriceList = new int[ROWS][COLUMNS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                copyOfPriceList[i][j] = priceList[i][j];
+            }
+        }
 
         bubbleSort2dArrayDecending(copyOfPriceList);
         print2dList(copyOfPriceList);
@@ -70,9 +67,7 @@ public class App {
 
             formattedString += lineToPrint;
         }
-
         System.out.println(formattedString);
-
     }
 
     private static void minMaxAvg(int[][] priceList) {
@@ -110,7 +105,6 @@ public class App {
         System.out.println(output);
     }
 
-
     private static void bubbleSort2dArrayDecending(int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length - i - 1; j++) {
@@ -122,7 +116,6 @@ public class App {
             }
         }
     }
-
 
     private static int[][] handleInput(Scanner fetch) {
 
