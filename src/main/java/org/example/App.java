@@ -19,9 +19,45 @@ public class App {
 
     }
 
+
+    private static void bestChargingHours(int[][] priceList) {
+
+        int[] prices4Hours = new int[20]; // will not check prices after 20 because theres not 4 hours left in the day
+
+        // adding prices for each 4 hour bracket and putting that value into a new list
+        for (int i = 0; i < 20; i++) {
+            prices4Hours[i] = priceList[i][PRICE] + priceList[i + 1][PRICE] + priceList[i + 2][PRICE] + priceList[i + 3][PRICE];
+        }
+
+        // finding the best time to start charging
+        int lowestPrice = prices4Hours[0];
+        int lowestPriceIndex = 0;
+        for (int i = 1; i < prices4Hours.length; i++) {
+            if (prices4Hours[i] < lowestPrice) {
+                lowestPriceIndex = i;
+                lowestPrice = prices4Hours[i];
+            }
+        }
+
+        // calculating avarage
+        double avarage = lowestPrice / 4.0;
+
+        // printing out best time to start charging
+        //System.out.println("Påbörja laddning klockan " + lowestPrice);
+        //System.out.printf("Medelpris 4h: %.2f öre/kWh\n", avarage); // 2 decimals
+
+        String output = String.format("Påbörja laddning klockan %d\nMedelpris 4h: %.1f öre/kWh\n", lowestPriceIndex, avarage);
+        System.out.println(output);
+
+
+    }
+
     private static void printSortedList(int[][] priceList) {
-        bubbleSort2dArrayDecending(priceList);
-        print2dList(priceList);
+        int[][] copyOfPriceList = priceList; // making a copy so that we dont change the real list, because we need the
+        // unsorted list for the next assignment
+
+        bubbleSort2dArrayDecending(copyOfPriceList);
+        print2dList(copyOfPriceList);
     }
 
     private static void print2dList(int[][] priceList) {
@@ -162,7 +198,7 @@ public class App {
                     break;
                 }
                 case "4": {
-                    System.out.println("test4");
+                    bestChargingHours(priceList);
                     break;
                 }
 
