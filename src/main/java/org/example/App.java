@@ -182,45 +182,36 @@ public class App {
             String choice = fetch.nextLine();
 
             switch (choice) {
-
-                case "1": {
-                    //priceList = handleInput(fetch);
+                case "1" -> {
                     priceList = handleInput(fetch);
-                    break;
                 }
-
-                case "2": {
+                case "2" -> {
                     minMaxAvg(priceList);
-                    break;
                 }
-                case "3": {
+                case "3" -> {
                     printSortedList(priceList);
-                    break;
                 }
-                case "4": {
+                case "4" -> {
                     bestChargingHours(priceList);
-                    break;
                 }
-
-                case "e":
-                case "E": {
+                case "e", "E" -> {
                     System.out.println("Exiting program.. ");
                     runMenu = false;
-                    break;
                 }
-                default:
-                    System.out.println("Invalid input..");
+                default -> System.out.println("Invalid input..");
             }
         } while (runMenu);
     }
 
     private static void printMenuItems() {
-        System.out.print("Elpriser\n" +
-                "========\n" +
-                "1. Inmatning\n" +
-                "2. Min, Max och Medel\n" +
-                "3. Sortera\n" +
-                "4. Bästa Laddningstid (4h)\n" +
-                "e. Avsluta\n");
+        System.out.print("""
+                Elpriser
+                ========
+                1. Inmatning
+                2. Min, Max och Medel
+                3. Sortera
+                4. Bästa Laddningstid (4h)
+                e. Avsluta
+                """);
     }
 }
