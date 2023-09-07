@@ -64,10 +64,10 @@ public class App {
 
         String formattedString = "";
 
-        for (int i = 0; i < priceList.length; i++) {
-            String startHour = String.format("%02d", priceList[i][HOUR_START]);
-            String stopHour = String.format("%02d", priceList[i][HOUR_STOP]);
-            String lineToPrint = startHour + "-" + stopHour + " " + priceList[i][PRICE] + " öre\n";
+        for (int[] ints : priceList) {
+            String startHour = String.format("%02d", ints[HOUR_START]);
+            String stopHour = String.format("%02d", ints[HOUR_STOP]);
+            String lineToPrint = startHour + "-" + stopHour + " " + ints[PRICE] + " öre\n";
 
             formattedString += lineToPrint;
         }
@@ -96,8 +96,8 @@ public class App {
 
         // Calculating the average price
         int sum = 0;
-        for (int i = 0; i < priceList.length; i++) {
-            sum += priceList[i][PRICE];
+        for (int[] ints : priceList) {
+            sum += ints[PRICE];
         }
         double average = (double) sum / priceList.length;
         // formatting so it contains only 2 decimals, and replaces . with ,
@@ -122,22 +122,6 @@ public class App {
                 }
             }
         }
-    }
-
-
-    // for testing purpose
-    private static int[][] handleInputRandomNr() {
-
-        Random rand = new Random();
-        int[][] tempList = new int[ROWS][COLUMNS];
-
-        for (int i = 0; i < tempList.length; i++) {
-            int randomNr = rand.nextInt(25) + 1; // generate random nr between 1 - 25
-            tempList[i][HOUR_START] = i;
-            tempList[i][HOUR_STOP] = i + 1;
-            tempList[i][PRICE] = randomNr;
-        }
-        return tempList;
     }
 
 
