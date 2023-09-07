@@ -182,18 +182,10 @@ public class App {
             String choice = fetch.nextLine();
 
             switch (choice) {
-                case "1" -> {
-                    priceList = handleInput(fetch);
-                }
-                case "2" -> {
-                    minMaxAvg(priceList);
-                }
-                case "3" -> {
-                    printSortedList(priceList);
-                }
-                case "4" -> {
-                    bestChargingHours(priceList);
-                }
+                case "1" -> priceList = handleInput(fetch);
+                case "2" -> minMaxAvg(priceList);
+                case "3" -> printSortedList(priceList);
+                case "4" -> bestChargingHours(priceList);
                 case "e", "E" -> {
                     System.out.println("Exiting program.. ");
                     runMenu = false;
