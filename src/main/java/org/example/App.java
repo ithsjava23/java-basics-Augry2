@@ -1,13 +1,13 @@
 package org.example;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
-    final static int ROWS = 24;
-    final static int COLUMNS = 3;
-    final static int HOUR_START = 0;
-    final static int HOUR_STOP = 1;
-    final static int PRICE = 2;
+    private final static int ROWS = 24;
+    private final static int COLUMNS = 3;
+    private final static int HOUR_START = 0;
+    private final static int HOUR_STOP = 1;
+    private final static int PRICE = 2;
 
 
     public static void main(String[] args) {
@@ -16,6 +16,27 @@ public class App {
 
         showMenu(fetch, priceList);
     }
+
+    private static void visualizePrices(int[][] priceList) {
+        // making a copy
+        int[][] copyOfPriceList = copy2dArray(priceList);
+
+        // sorting the copied array, decending order
+        bubbleSort2dArrayDecending(copyOfPriceList);
+
+
+
+
+
+
+
+
+        for (int i = 0; i < copyOfPriceList.length; i++) {
+            System.out.println(copyOfPriceList[i][PRICE]);
+        }
+
+    }
+
 
     private static void bestChargingHours(int[][] priceList) {
 
@@ -45,27 +66,32 @@ public class App {
 
     private static void printSortedList(int[][] priceList) {
         // creating a copy of pricelist so we dont change the actual list, because it will mess with the output of alternative 4.
+        int[][] copyOfPriceList = copy2dArray(priceList);
+
+        bubbleSort2dArrayDecending(copyOfPriceList);
+        print2dList(copyOfPriceList);
+    }
+
+    private static int[][] copy2dArray(int[][] priceList) {
         int[][] copyOfPriceList = new int[ROWS][COLUMNS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 copyOfPriceList[i][j] = priceList[i][j];
             }
         }
-
-        bubbleSort2dArrayDecending(copyOfPriceList);
-        print2dList(copyOfPriceList);
+        return copyOfPriceList;
     }
 
     private static void print2dList(int[][] priceList) {
 
-        String formattedString = "";
+        StringBuilder formattedString = new StringBuilder();
 
         for (int[] ints : priceList) {
             String startHour = String.format("%02d", ints[HOUR_START]);
             String stopHour = String.format("%02d", ints[HOUR_STOP]);
             String lineToPrint = startHour + "-" + stopHour + " " + ints[PRICE] + " öre\n";
 
-            formattedString += lineToPrint;
+            formattedString.append(lineToPrint); // appending the current line to a string which will contain all the info
         }
         System.out.println(formattedString);
     }
@@ -94,6 +120,7 @@ public class App {
             sum += ints[PRICE];
         }
         double average = (double) sum / priceList.length;
+
         // formatting so it contains only 2 decimals, and replaces . with ,
         String formattedAverage = String.format("%.2f", average).replace('.', ',');
 
@@ -118,7 +145,6 @@ public class App {
     }
 
     private static int[][] handleInput(Scanner fetch) {
-
         int value;
         int[][] tempList = new int[ROWS][COLUMNS];
 
@@ -127,8 +153,7 @@ public class App {
             boolean validEntry = false;
 
             // repeat this until user has entered a valid entry
-            while (!validEntry) { // run while validEntry is false
-                //System.out.println("enter value for " + i + " to " + (i + 1));
+            while (!validEntry) { // run while validEntry is not true
                 if (fetch.hasNextInt()) {
 
                     value = fetch.nextInt();
@@ -144,11 +169,9 @@ public class App {
                 }
             }
         }
-
         return tempList;
-
-
     }
+
 
     private static void showMenu(Scanner fetch, int[][] priceList) {
         boolean runMenu = true;
@@ -162,6 +185,7 @@ public class App {
                 case "2" -> minMaxAvg(priceList);
                 case "3" -> printSortedList(priceList);
                 case "4" -> bestChargingHours(priceList);
+                case "5" -> visualizePrices(priceList);
                 case "e", "E" -> {
                     System.out.println("Exiting program.. ");
                     runMenu = false;
@@ -179,6 +203,7 @@ public class App {
                 2. Min, Max och Medel
                 3. Sortera
                 4. Bästa Laddningstid (4h)
+                5. Visualisering
                 e. Avsluta
                 """);
     }
