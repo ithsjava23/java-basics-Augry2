@@ -13,6 +13,18 @@ public class App {
     public static void main(String[] args) {
         Scanner fetch = new Scanner(System.in);
         int[][] priceList = new int[ROWS][COLUMNS];
+        // 76 rows
+        String response = """
+                100|  x                                                                    \s
+                   |  x  x  x  x                                                           \s
+                   |  x  x  x  x  x                                                        \s
+                   |  x  x  x  x  x  x  x  x                                               \s
+                   |  x  x  x  x  x  x  x  x  x                                            \s
+                -12|  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+                   |------------------------------------------------------------------------
+                   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+                """;
+        //System.out.println(response);
 
         showMenu(fetch, priceList);
     }
@@ -21,20 +33,72 @@ public class App {
         // making a copy
         int[][] copyOfPriceList = copy2dArray(priceList);
 
-        // sorting the copied array, decending order
-        bubbleSort2dArrayDecending(copyOfPriceList);
+        int bigNr = copyOfPriceList[0][2]; // biggest nr is the first element of both tests, so its hardcoded
+        int lowNr = findLowestValue(priceList);
 
+        double intervalNr = (bigNr - lowNr) / 5.0;
+        double nrToCheck = bigNr;
 
+        int counter = 0;
 
+        for (int i = 0; i < 6; i++) {
 
+            for (int j = 0; j < copyOfPriceList.length; j++) {
 
+                int currentPrice = copyOfPriceList[j][PRICE];
 
+                printTabs(counter, bigNr, lowNr);
 
+                if(currentPrice >= (int) nrToCheck){ // typecasting to int to remove decimals
+                    System.out.print("  x");
+                }else{
+                    System.out.print("  ");
+                }
+                counter++;
+            }// end of inner loop
 
-        for (int i = 0; i < copyOfPriceList.length; i++) {
-            System.out.println(copyOfPriceList[i][PRICE]);
+            nrToCheck = nrToCheck - intervalNr;
+            System.out.print("\n");
+        }// end of outer loop
+        System.out.println("   |------------------------------------------------------------------------");
+        System.out.print("   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23\n");
+    }
+
+    private static void printTabs(int counter, int bigNr, int lowNr) {
+        if (counter == 0){
+            System.out.print(bigNr + "|");
+        }else if (counter == 24){
+            System.out.print("   |");
+        } else if (counter == 48) {
+            System.out.print("   |");
+        }else if (counter == 72) {
+            System.out.print("   |");
+        }else if (counter == 96) {
+            System.out.print("   |");
+        }else if (counter == 120) {
+            System.out.print((lowNr >= 0 && lowNr < 100 ? " " : "") + lowNr + "|");
+        }
+    }
+
+    // chatgpt method, study it later
+    private static int findLowestValue(int[][] priceList) {
+        if (priceList.length == 0 || priceList[0].length <= 2) {
+            // Handle the case where the array is empty or doesn't have a third column.
+            // You can throw an exception or return a special value as needed.
+            return Integer.MIN_VALUE; // or throw an exception
         }
 
+        int lowestValue = priceList[0][2]; // Initialize with the first value
+
+        for (int i = 1; i < priceList.length; i++) {
+            int currentValue = priceList[i][2];
+
+            if (currentValue < lowestValue) {
+                lowestValue = currentValue; // Update the lowest value
+            }
+        }
+
+        return lowestValue;
     }
 
 
