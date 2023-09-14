@@ -111,6 +111,7 @@ public class App {
         double average = lowestPrice / 4.0;
 
         String output = String.format("Påbörja laddning klockan %d\nMedelpris 4h: %.1f öre/kWh\n", lowestPriceIndex, average);
+        output = output.replace(".", ",");
         System.out.println(output);
     }
 
