@@ -13,19 +13,6 @@ public class App {
     public static void main(String[] args) {
         Scanner fetch = new Scanner(System.in);
         int[][] priceList = new int[ROWS][COLUMNS];
-        // 76 rows
-        String response = """
-                100|  x                                                                    \s
-                   |  x  x  x  x                                                           \s
-                   |  x  x  x  x  x                                                        \s
-                   |  x  x  x  x  x  x  x  x                                               \s
-                   |  x  x  x  x  x  x  x  x  x                                            \s
-                -12|  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
-                   |------------------------------------------------------------------------
-                   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-                """;
-        //System.out.println(response);
-
         showMenu(fetch, priceList);
     }
 
@@ -39,7 +26,7 @@ public class App {
         double intervalNr = (bigNr - lowNr) / 5.0;
         double nrToCheck = bigNr;
 
-        int counter = 0;
+        int counter = 0; // used for printing out | in the correct place
 
         for (int i = 0; i < 6; i++) {
 
@@ -48,11 +35,11 @@ public class App {
                 int currentPrice = copyOfPriceList[j][PRICE];
 
                 printTabs(counter, bigNr, lowNr);
-
-                if(currentPrice >= (int) nrToCheck){ // typecasting to int to remove decimals
+                // typecasting to int to remove decimals
+                if (currentPrice >= (int) nrToCheck) {
                     System.out.print("  x");
-                }else{
-                    System.out.print("  ");
+                } else {
+                    System.out.print("   ");
                 }
                 counter++;
             }// end of inner loop
@@ -60,27 +47,26 @@ public class App {
             nrToCheck = nrToCheck - intervalNr;
             System.out.print("\n");
         }// end of outer loop
-        System.out.println("   |------------------------------------------------------------------------");
-        System.out.print("   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23\n");
+        System.out.print("   |------------------------------------------------------------------------\n");
+        System.out.print("   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23\n\n");
     }
 
     private static void printTabs(int counter, int bigNr, int lowNr) {
-        if (counter == 0){
+        if (counter == 0) {
             System.out.print(bigNr + "|");
-        }else if (counter == 24){
+        } else if (counter == 24) {
             System.out.print("   |");
         } else if (counter == 48) {
             System.out.print("   |");
-        }else if (counter == 72) {
+        } else if (counter == 72) {
             System.out.print("   |");
-        }else if (counter == 96) {
+        } else if (counter == 96) {
             System.out.print("   |");
-        }else if (counter == 120) {
-            System.out.print((lowNr >= 0 && lowNr < 100 ? " " : "") + lowNr + "|");
+        } else if (counter == 120) {
+            System.out.print((lowNr >= 0 && lowNr < 100 ? " " : "") + lowNr + "|"); // if condition is met print a space otherwise print the lowest nr and no space
         }
     }
 
-    // chatgpt method, study it later
     private static int findLowestValue(int[][] priceList) {
         if (priceList.length == 0 || priceList[0].length <= 2) {
             // Handle the case where the array is empty or doesn't have a third column.
@@ -104,7 +90,7 @@ public class App {
 
     private static void bestChargingHours(int[][] priceList) {
 
-        int[] prices4Hours = new int[20]; // will not check prices after 20 because theres not 4 hours left in the day
+        int[] prices4Hours = new int[20]; // will not check prices after 20 because there's not 4 hours left in the day
 
         // adding prices for each 4 hour bracket and putting that value into a new list
         for (int i = 0; i < 20; i++) {
@@ -121,15 +107,15 @@ public class App {
             }
         }
 
-        // calculating avarage
-        double avarage = lowestPrice / 4.0;
+        // calculating average
+        double average = lowestPrice / 4.0;
 
-        String output = String.format("Påbörja laddning klockan %d\nMedelpris 4h: %.1f öre/kWh\n", lowestPriceIndex, avarage);
+        String output = String.format("Påbörja laddning klockan %d\nMedelpris 4h: %.1f öre/kWh\n", lowestPriceIndex, average);
         System.out.println(output);
     }
 
     private static void printSortedList(int[][] priceList) {
-        // creating a copy of pricelist so we dont change the actual list, because it will mess with the output of alternative 4.
+        // creating a copy of price-list, so we don't change the actual list, because it will mess with the output of alternative 4.
         int[][] copyOfPriceList = copy2dArray(priceList);
 
         bubbleSort2dArrayDecending(copyOfPriceList);
@@ -164,7 +150,7 @@ public class App {
         int lowestPriceIndex = 0;
         int highestPriceIndex = 0;
 
-        // iterating through the list and if a lowest price is found its saved in a variable, same with highest
+        // iterating through the list and if the lowest price is found its saved in a variable, same with highest
         for (int i = 1; i < priceList.length; i++) {
             if (priceList[i][PRICE] < priceList[lowestPriceIndex][PRICE]) {
                 lowestPriceIndex = i;
