@@ -30,9 +30,9 @@ public class App {
 
         for (int i = 0; i < 6; i++) {
 
-            for (int j = 0; j < copyOfPriceList.length; j++) {
+            for (int[] ints : copyOfPriceList) {
 
-                int currentPrice = copyOfPriceList[j][PRICE];
+                int currentPrice = ints[PRICE];
 
                 printTabs(counter, bigNr, lowNr);
                 // typecasting to int to remove decimals
@@ -125,9 +125,7 @@ public class App {
     private static int[][] copy2dArray(int[][] priceList) {
         int[][] copyOfPriceList = new int[ROWS][COLUMNS];
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                copyOfPriceList[i][j] = priceList[i][j];
-            }
+            System.arraycopy(priceList[i], 0, copyOfPriceList[i], 0, COLUMNS);
         }
         return copyOfPriceList;
     }
